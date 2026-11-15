@@ -4,6 +4,7 @@
         xmlns:c="clr-namespace:Roomy.Controls"
         xmlns:loc="clr-namespace:Roomy.Core"
         Title="Roomy" Width="1160" Height="780" MinWidth="920" MinHeight="660"
+        Icon="/Roomy;component/Assets/roomy.ico"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BgBrush}"
         Foreground="{StaticResource TextBrush}"

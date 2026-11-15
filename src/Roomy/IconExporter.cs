@@ -5,13 +5,18 @@ using Roomy.Controls;
 
 namespace Roomy;
 
-/// <summary>Renders the logo control into a multi-resolution .ico (PNG frames) plus a 512px PNG.</summary>
+/// <summary>
+/// Renders the logo control into a multi-resolution .ico plus a 512px PNG.
+/// Small frames are stored as uncompressed 32bpp DIBs and only 128/256 as PNG: the shell,
+/// GDI (+ <c>System.Drawing.Icon</c> used for the tray) and installers all read DIB frames,
+/// while PNG-only icons are ignored by some Windows surfaces.
+/// </summary>
 internal static class IconExporter
 {
     public static void Export(string icoPath)
     {
         int[] sizes = [16, 20, 24, 32, 40, 48, 64, 128, 256];
-        var frames = sizes.Select(s => Png(Render(s))).ToList();
+        var frames = sizes.Select(s => s <= 64 ? Dib(Render(s)) : Png(Render(s))).ToList();
 
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(icoPath))!);
         using (var fs = File.Create(icoPath))
@@ -38,6 +43,38 @@ internal static class IconExporter
         }
 
         File.WriteAllBytes(Path.ChangeExtension(icoPath, ".png"), Png(Render(512)));
+    }
+
+    /// <summary>32bpp BGRA DIB frame in the layout .ico expects (BITMAPINFOHEADER, bottom-up XOR, AND mask).</summary>
+    static byte[] Dib(BitmapSource source)
+    {
+        int w = source.PixelWidth, h = source.PixelHeight;
+        var straight = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
+        var pixels = new byte[w * h * 4];
+        straight.CopyPixels(pixels, w * 4, 0);
+
+        using var ms = new MemoryStream();
+        using var bw = new BinaryWriter(ms);
+        bw.Write(40);              // biSize
+        bw.Write(w);               // biWidth
+        bw.Write(h * 2);           // biHeight: XOR image + AND mask
+        bw.Write((short)1);        // biPlanes
+        bw.Write((short)32);       // biBitCount
+        bw.Write(0);               // biCompression = BI_RGB
+        bw.Write(0);               // biSizeImage
+        bw.Write(0);               // biXPelsPerMeter
+        bw.Write(0);               // biYPelsPerMeter
+        bw.Write(0);               // biClrUsed
+        bw.Write(0);               // biClrImportant
+
+        for (int y = h - 1; y >= 0; y--)
+            bw.Write(pixels, y * w * 4, w * 4);
+
+        // The AND mask is unused with 32bpp alpha, but must be present and padded to 32 bits.
+        int maskStride = ((w + 31) / 32) * 4;
+        bw.Write(new byte[maskStride * h]);
+        bw.Flush();
+        return ms.ToArray();
     }
 
     /// <summary>Store display images: transparent tile icons plus graphite box/poster art.</summary>

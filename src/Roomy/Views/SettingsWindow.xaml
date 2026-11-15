@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:Roomy.Core"
         Title="{loc:Tr SettingsTitle}" Width="610" Height="740" MinWidth="540" MinHeight="560"
+        Icon="/Roomy;component/Assets/roomy.ico"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         Background="{StaticResource BgBrush}" Foreground="{StaticResource TextBrush}"
         FontFamily="{StaticResource UiFont}" FontSize="14">

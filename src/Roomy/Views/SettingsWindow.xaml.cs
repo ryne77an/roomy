@@ -18,7 +18,7 @@ public partial class SettingsWindow : Window
     {
         InitializeComponent();
         var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-        VersionText.Text = v is null ? "Roomy" : $"Roomy {v.Major}.{v.Minor}.{v.Build}";
+        VersionText.Text = v is null ? "Roomy" : Loc.T("SetVersion", $"{v.Major}.{v.Minor}.{v.Build}");
         _desktop = desktop;
         var p = desktop.Preferences;
         BackgroundCheck.IsChecked = p.RunInBackground;
@@ -56,7 +56,7 @@ public partial class SettingsWindow : Window
         {
             StartupCheck.IsEnabled = false;
             SaveButton.IsEnabled = false;
-            StatusText.Text = "Couldn't read the startup setting: " + ex.Message;
+            StatusText.Text = Loc.T("StartupReadFailed", ex.Message);
         }
     }
 
@@ -66,7 +66,7 @@ public partial class SettingsWindow : Window
         if (_startup is { Enabled: true, Blocked: true })
         {
             BackgroundCheck.IsChecked = true;
-            StatusText.Text = "Windows manages startup for this app. Change that setting in Windows first.";
+            StatusText.Text = Loc.T("StartWindowsManages");
             return;
         }
         StartupCheck.IsChecked = false;
@@ -95,15 +95,15 @@ public partial class SettingsWindow : Window
     }
 
     void UpdatePause() => PauseStatus.Text = _snoozedUntil > DateTimeOffset.UtcNow
-        ? $"Reminders paused until {_snoozedUntil.Value.LocalDateTime:g}."
-        : "Reminders follow your Windows notification settings.";
+        ? Loc.T("PauseUntil", $"{_snoozedUntil.Value.LocalDateTime:g}")
+        : Loc.T("PauseDefault");
 
     async void Save_Click(object sender, RoutedEventArgs e)
     {
         if (_startup is null || _saving) return;
         if (!int.TryParse(ThresholdBox.Text, out var threshold) || threshold is < 1 or > 500)
         {
-            StatusText.Text = "Choose a free-space threshold from 1 to 500 GB.";
+            StatusText.Text = Loc.T("ThresholdInvalid");
             ThresholdBox.Focus();
             return;
         }
@@ -118,7 +118,7 @@ public partial class SettingsWindow : Window
             if (!_desktop.IsDemo && start != previousStartup)
             {
                 var result = await StartupRegistration.SetEnabledAsync(start);
-                if (result.Enabled != start) throw new InvalidOperationException(result.Message ?? "Windows didn't allow the startup change.");
+                if (result.Enabled != start) throw new InvalidOperationException(result.Message ?? Loc.T("StartDenied"));
                 startupChanged = true;
             }
             var current = _desktop.Preferences;
@@ -137,11 +137,11 @@ public partial class SettingsWindow : Window
         }
         catch (Exception ex)
         {
-            StatusText.Text = "Couldn't save settings: " + ex.Message;
+            StatusText.Text = Loc.T("SaveFailed", ex.Message);
             if (startupChanged)
             {
                 try { await StartupRegistration.SetEnabledAsync(previousStartup); }
-                catch { StatusText.Text += " Check Windows Startup apps to confirm its current setting."; }
+                catch { StatusText.Text += Loc.T("SaveFailedCheckStartup"); }
             }
         }
         finally

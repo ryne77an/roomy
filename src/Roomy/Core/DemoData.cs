@@ -10,10 +10,16 @@ public static class DemoData
     static long Gb(double v) => (long)(v * GB);
     static long Mb(double v) => (long)(v * MB);
 
-    public static readonly (string Root, string Label, long Total, long Free)[] Drives =
+    static string Files(long n) =>
+        Loc.T("DetailFiles", n.ToString("N0"), Loc.N(n, "FileOne", "FileFew", "FileMany"));
+
+    static string Items(long n) =>
+        Loc.T("DetailItems", n.ToString("N0"), Loc.N(n, "ItemOne", "ItemFew", "ItemMany"));
+
+    public static (string Root, string Label, long Total, long Free)[] Drives =>
     [
         (@"C:\", "", Gb(237.9), Gb(9.6)),
-        (@"D:\", "Games", Gb(931.5), Gb(212.4)),
+        (@"D:\", Loc.T("DemoDriveLabelGames"), Gb(931.5), Gb(212.4)),
     ];
 
     static CleanupItem I(string name, long size, string detail, bool file = false) => new()
@@ -28,59 +34,75 @@ public static class DemoData
         switch (id)
         {
             case "recycle":
-                A("Recycle Bin", Gb(3.21), "214 items");
+                A(c.Title, Gb(3.21), Items(214));
                 break;
             case "temp":
-                A("Your temp folder", Gb(4.62), "18,402 files");
+                A(Loc.T("ItemYourTemp"), Gb(4.62), Files(18_402));
                 break;
             case "browser":
-                A("Google Chrome", Gb(2.08), "9,311 files");
-                A("Microsoft Edge", Mb(712), "3,904 files");
-                A("Firefox", Mb(388), "2,117 files");
+                A("Google Chrome", Gb(2.08), Files(9_311));
+                A("Microsoft Edge", Mb(712), Files(3_904));
+                A("Firefox", Mb(388), Files(2_117));
                 break;
             case "apps":
-                A("npm cache", Gb(2.26), "41,870 files");
-                A("Discord", Gb(1.38), "6,220 files");
-                A("VS Code", Mb(864), "2,951 files");
-                A("Steam's web browser", Mb(412), "1,480 files");
-                A("Slack", Mb(296), "1,022 files");
+                A("npm cache", Gb(2.26), Files(41_870));
+                A("Discord", Gb(1.38), Files(6_220));
+                A("VS Code", Mb(864), Files(2_951));
+                A(Loc.T("ItemSteamWeb"), Mb(412), Files(1_480));
+                A("Slack", Mb(296), Files(1_022));
                 break;
             case "shaders":
-                A("Steam games", Gb(3.62), "12,094 files");
-                A("NVIDIA", Gb(1.91), "4,388 files");
-                A("DirectX", Mb(742), "1,203 files");
+                A(Loc.T("ItemSteamGames"), Gb(3.62), Files(12_094));
+                A("NVIDIA", Gb(1.91), Files(4_388));
+                A("DirectX", Mb(742), Files(1_203));
                 break;
             case "crash":
-                A("App crash dumps", Gb(1.12), "37 files");
-                A("Windows error reports", Mb(286), "412 files");
+                A(Loc.T("ItemAppCrashDumps"), Gb(1.12), Files(37));
+                A(Loc.T("ItemWindowsErrorReports"), Mb(286), Files(412));
                 break;
             case "windows":
-                A("Downloaded updates", Gb(6.31), "1,904 files");
-                A("Delivery Optimization", Gb(1.82), "96 files");
-                A("Windows temp folder", Mb(524), "3,311 files");
+                A(Loc.T("ItemDownloadedUpdates"), Gb(6.31), Files(1_904));
+                A(Loc.T("ItemDeliveryOptimization"), Gb(1.82), Files(96));
+                A(Loc.T("ItemWindowsTemp"), Mb(524), Files(3_311));
                 break;
             case "installers":
-                A("Blender-4.3-windows-x64.msi", Mb(341), "Downloaded 4 months ago", true);
-                A("OBS-Studio-31.0-Windows-Installer.exe", Mb(152), "Downloaded 3 months ago", true);
-                A("NVIDIA_App_v11.0.exe", Mb(148), "Downloaded 5 weeks ago", true);
-                A("UnityHubSetup.exe", Mb(127), "Downloaded 7 months ago", true);
-                A("DiscordSetup.exe", Mb(112), "Downloaded a year ago", true);
-                A("VSCodeUserSetup-x64.exe", Mb(98), "Downloaded 2 months ago", true);
-                A("python-3.13.1-amd64.exe", Mb(27), "Downloaded 6 months ago", true);
-                A("node-v22.11.0-x64.msi", Mb(29), "Downloaded 4 months ago", true);
-                A("SteamSetup.exe", Mb(2.3), "Downloaded a year ago", true);
+                A("Blender-4.3-windows-x64.msi", Mb(341), Downloaded(4, "months"), true);
+                A("OBS-Studio-31.0-Windows-Installer.exe", Mb(152), Downloaded(3, "months"), true);
+                A("NVIDIA_App_v11.0.exe", Mb(148), Downloaded(5, "weeks"), true);
+                A("UnityHubSetup.exe", Mb(127), Downloaded(7, "months"), true);
+                A("DiscordSetup.exe", Mb(112), Downloaded(1, "year"), true);
+                A("VSCodeUserSetup-x64.exe", Mb(98), Downloaded(2, "months"), true);
+                A("python-3.13.1-amd64.exe", Mb(27), Downloaded(6, "months"), true);
+                A("node-v22.11.0-x64.msi", Mb(29), Downloaded(4, "months"), true);
+                A("SteamSetup.exe", Mb(2.3), Downloaded(1, "year"), true);
                 break;
             case "downloads":
-                A("Windows11_InsiderPreview.iso", Gb(6.12), "Untouched for 8 months", true);
-                A("Recording 2026-03-14.mkv", Gb(3.24), "Untouched for 7 months", true);
-                A("final-edit-v3-export.mp4", Gb(2.41), "Untouched for 2 months", true);
-                A("dataset-full.zip", Gb(1.83), "Untouched for 5 months", true);
+                A("Windows11_InsiderPreview.iso", Gb(6.12), Untouched(8));
+                A("Recording 2026-03-14.mkv", Gb(3.24), Untouched(7));
+                A("final-edit-v3-export.mp4", Gb(2.41), Untouched(2));
+                A("dataset-full.zip", Gb(1.83), Untouched(5));
                 break;
             case "games":
-                c.Items.Add(new CleanupItem { Name = "Iron Frontier", Paths = [@"D:\Steam\steamapps\common\Iron Frontier"], Size = Gb(118.6), AppId = "0", Detail = "Last played a year ago" });
-                c.Items.Add(new CleanupItem { Name = "Neon Drift", Paths = [@"D:\Steam\steamapps\common\Neon Drift"], Size = Gb(71.2), AppId = "0", Detail = "Last played 7 months ago" });
-                c.Items.Add(new CleanupItem { Name = "Starfall Odyssey", Paths = [@"D:\Steam\steamapps\common\Starfall Odyssey"], Size = Gb(43.9), AppId = "0", Detail = "Last played 4 months ago" });
-                c.Items.Add(new CleanupItem { Name = "Pixel Kingdoms", Paths = [@"D:\Steam\steamapps\common\Pixel Kingdoms"], Size = Gb(3.4), AppId = "0", Detail = "Never played" });
+                c.Items.Add(new CleanupItem
+                {
+                    Name = "Iron Frontier", Paths = [@"D:\Steam\steamapps\common\Iron Frontier"],
+                    Size = Gb(118.6), AppId = "0", Detail = Loc.T("DetailLastPlayed", Loc.T("AgoYear")),
+                });
+                c.Items.Add(new CleanupItem
+                {
+                    Name = "Neon Drift", Paths = [@"D:\Steam\steamapps\common\Neon Drift"],
+                    Size = Gb(71.2), AppId = "0", Detail = Loc.T("DetailLastPlayed", Loc.T("AgoMonths", 7)),
+                });
+                c.Items.Add(new CleanupItem
+                {
+                    Name = "Starfall Odyssey", Paths = [@"D:\Steam\steamapps\common\Starfall Odyssey"],
+                    Size = Gb(43.9), AppId = "0", Detail = Loc.T("DetailLastPlayed", Loc.T("AgoMonths", 4)),
+                });
+                c.Items.Add(new CleanupItem
+                {
+                    Name = "Pixel Kingdoms", Paths = [@"D:\Steam\steamapps\common\Pixel Kingdoms"],
+                    Size = Gb(3.4), AppId = "0", Detail = Loc.T("DetailNeverPlayed"),
+                });
                 break;
             case "winold":
                 A("Windows.old", Gb(21.4), "");
@@ -88,6 +110,15 @@ public static class DemoData
         }
         return c;
     }
+
+    static string Downloaded(int n, string unit) => unit switch
+    {
+        "year" => Loc.T("DetailDownloaded", Loc.T("AgoYear")),
+        "weeks" => Loc.T("DetailDownloaded", Loc.T("AgoWeeks", n)),
+        _ => Loc.T("DetailDownloaded", Loc.T("AgoMonths", n)),
+    };
+
+    static string Untouched(int months) => Loc.T("DetailUntouched", Loc.T("AgoShortMonths", months));
 
     // ---------- space map ----------
 

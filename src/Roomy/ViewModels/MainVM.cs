@@ -120,7 +120,7 @@ public sealed class MainVM : ObservableObject
                 var step = Scanner.Steps[i];
                 var row = ScanSteps[i];
                 row.State = StepState.Active;
-                ScanStep = $"Checking {step.Title}…";
+                ScanStep = Loc.T("ScanChecking", step.Title);
 
                 var sw = Stopwatch.StartNew();
                 var cat = IsDemo ? DemoData.Category(step.Id) : await Task.Run(() => SafeRun(step, ctx));
@@ -142,7 +142,7 @@ public sealed class MainVM : ObservableObject
         }
         catch (Exception ex)
         {
-            ShowToast("The scan hit a problem: " + ex.Message);
+            ShowToast(Loc.T("ScanFailed", ex.Message));
             State = AppState.Home;
         }
         finally
@@ -182,12 +182,14 @@ public sealed class MainVM : ObservableObject
     public long ReviewTotal => Categories.Where(c => !c.IsSafe && !c.IsBlocked).Sum(c => c.Size);
     public bool NothingFound => Categories.Count == 0;
     public string ReviewSummary => ReviewTotal > 0
-        ? $"Plus {Format.Bytes(ReviewTotal)} more that's worth a look. That part is your call."
-        : "That's everything we found.";
+        ? Loc.T("ReviewMore", Format.Bytes(ReviewTotal))
+        : Loc.T("ReviewNone");
     public bool ShowAdminBanner => !IsAdmin && Categories.Any(c => c.IsBlocked);
 
     public long SelectedTotal => Categories.Sum(c => c.SelectedSize);
-    public string CleanButtonText => SelectedTotal > 0 ? $"Clean up {Format.Bytes(SelectedTotal)}" : "Pick something to clean";
+    public string CleanButtonText => SelectedTotal > 0
+        ? Loc.T("CleanUpAmount", Format.Bytes(SelectedTotal))
+        : Loc.T("PickToClean");
 
     internal void Recalc()
     {
@@ -235,7 +237,7 @@ public sealed class MainVM : ObservableObject
     long _skipped;
     public long Skipped { get => _skipped; private set => Set(ref _skipped, value); }
     public bool HasSkipped => Skipped > 100L * 1024 * 1024;
-    public string SkippedText => $"{Format.Bytes(Skipped)} was in use by open apps, so we left it alone. Close them and scan again to grab it.";
+    public string SkippedText => Loc.T("Skipped", Format.Bytes(Skipped));
 
     double _before, _after;
     public double BeforeFraction { get => _before; private set => Set(ref _before, value); }
@@ -262,10 +264,12 @@ public sealed class MainVM : ObservableObject
         if (review.Count > 0)
         {
             var ok = await ConfirmAsync(
-                "Delete these for good?",
-                $"You picked {review.Count} file{(review.Count == 1 ? "" : "s")} from your Downloads ({Format.Bytes(review.Sum(i => i.Size))}). " +
-                "They'll be deleted permanently, not moved to the Recycle Bin, so make sure you don't need them.",
-                "Delete permanently");
+                Loc.T("ConfirmDeleteTitle"),
+                Loc.T("ConfirmDeleteBody",
+                    review.Count.ToString("N0"),
+                    Loc.N(review.Count, "FileOne", "FileFew", "FileMany"),
+                    Format.Bytes(review.Sum(i => i.Size))),
+                Loc.T("ConfirmDeleteYes"));
             if (!ok) return;
         }
 
@@ -275,9 +279,9 @@ public sealed class MainVM : ObservableObject
             var drive = SystemDrive;
             BeforeFraction = drive?.UsedFraction ?? 0;
             BeforeBrush = drive?.BarBrush;
-            BeforeText = drive is null ? "" : $"{Format.Bytes(drive.Free)} free";
+            BeforeText = drive is null ? "" : Loc.T("DriveFreeShort", Format.Bytes(drive.Free));
             CleanProgress = 0;
-            CleanStep = "Getting started…";
+            CleanStep = Loc.T("CleanGettingStarted");
             State = AppState.Cleaning;
 
             CleanResult r;
@@ -301,15 +305,15 @@ public sealed class MainVM : ObservableObject
             Skipped = r.Skipped;
             RefreshDrives();
             AfterFraction = drive?.UsedFraction ?? 0;
-            AfterText = drive is null ? "" : $"{Format.Bytes(drive.Free)} free";
-            DoneSubtitle = drive is null ? "" : $"Your {drive.Letter} drive now has {Format.Bytes(drive.Free)} free.";
+            AfterText = drive is null ? "" : Loc.T("DriveFreeShort", Format.Bytes(drive.Free));
+            DoneSubtitle = drive is null ? "" : Loc.T("DoneSubtitle", drive.LetterName, Format.Bytes(drive.Free));
             Raise(nameof(HasSkipped));
             Raise(nameof(SkippedText));
             State = AppState.Done;
         }
         catch (Exception ex)
         {
-            ShowToast("Cleaning stopped: " + ex.Message);
+            ShowToast(Loc.T("CleanStopped", ex.Message));
             State = AppState.Results;
         }
         finally
@@ -324,7 +328,7 @@ public sealed class MainVM : ObservableObject
         long done = 0;
         foreach (var j in jobs)
         {
-            CleanStep = $"Cleaning {j.Category.Title.ToLowerInvariant()}…";
+            CleanStep = Loc.T("CleanStep", j.Category.Title.ToLowerInvariant());
             done += j.Items.Sum(i => i.Size);
             CleanProgress = (double)done / total;
             await Task.Delay(320);
@@ -335,9 +339,9 @@ public sealed class MainVM : ObservableObject
 
     void RestartAsAdmin()
     {
-        if (IsDemo) { ShowToast("That button restarts Roomy with admin rights."); return; }
+        if (IsDemo) { ShowToast(Loc.T("DemoAdminToast")); return; }
         if (Admin.RestartElevated("--scan")) Application.Current.Shutdown();
-        else ShowToast("No worries, Roomy keeps working without admin.");
+        else ShowToast(Loc.T("NoAdminToast"));
     }
 
     // ---------- confirm dialog ----------

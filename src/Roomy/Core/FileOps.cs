@@ -131,6 +131,7 @@ public static class FileOps
         Env.SystemRoot, Env.Windows, Path.Combine(Env.Windows, "System32"), Env.UserProfile,
         Path.GetDirectoryName(Env.UserProfile) ?? "", Env.ProgramFiles, Env.ProgramFilesX86,
         Env.ProgramData, Env.Local, Env.Roaming, Env.Downloads,
+        Path.Combine(Env.UserProfile, "OneDrive"),
         Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
         Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
         Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
@@ -142,6 +143,28 @@ public static class FileOps
     {
         try { return Path.GetFullPath(p).TrimEnd('\\'); }
         catch { return p.TrimEnd('\\'); }
+    }
+
+    static bool Under(string path, string root)
+    {
+        if (root.Length == 0) return false;
+        return path.StartsWith(Norm(root) + "\\", StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// TMP/TEMP can point anywhere, including at real documents. Temp cleanup is only allowed in
+    /// folders that are actually a temp location: inside the user's local app data, inside Windows
+    /// or ProgramData, or a folder literally named Temp/Tmp outside the protected personal folders.
+    /// </summary>
+    public static bool IsTempRoot(string path)
+    {
+        var n = Norm(path);
+        if (n.Length <= 3) return false;
+        if (Protected.Any(p => string.Equals(p, n, StringComparison.OrdinalIgnoreCase))) return false;
+        if (Under(n, Env.Local) || Under(n, Env.Windows) || Under(n, Env.ProgramData)) return true;
+        var name = Path.GetFileName(n);
+        return name.Equals("Temp", StringComparison.OrdinalIgnoreCase) ||
+               name.Equals("Tmp", StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>Last line of defence: never wipe a drive root or a top-level personal/system folder.</summary>

@@ -14,7 +14,7 @@ public static class Cleaner
 
         foreach (var job in jobs)
         {
-            var step = $"Cleaning {job.Category.Title.ToLowerInvariant()}…";
+            var step = Loc.T("CleanStep", job.Category.Title.ToLowerInvariant());
             progress?.Report(((double)done / total, step));
 
             if (job.Category.Action == CleanAction.EmptyRecycleBin)
@@ -55,7 +55,7 @@ public static class Cleaner
             }
         }
 
-        progress?.Report((1, "All done"));
+        progress?.Report((1, Loc.T("CleanAllDone")));
         return new CleanResult(freed, skipped, files);
     }
 }

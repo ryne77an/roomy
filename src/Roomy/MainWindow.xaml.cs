@@ -108,7 +108,7 @@ public partial class MainWindow : Window
         {
             DataContext = new ShareData(
                 Format.Bytes(_vm.Freed),
-                drive is null ? "on my PC" : $"on my {drive.Letter} drive",
+                drive is null ? Loc.T("ShareCardOnPC") : Loc.T("ShareCardOnDrive", drive.LetterName),
                 _vm.BeforeFraction, _vm.AfterFraction, _vm.BeforeText, _vm.AfterText,
                 _vm.BeforeBrush ?? Res.Brush("DangerGradient")),
         };
@@ -132,11 +132,11 @@ public partial class MainWindow : Window
             var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Roomy");
             Directory.CreateDirectory(dir);
             SavePng(img, Path.Combine(dir, $"roomy-freed-{DateTime.Now:yyyyMMdd-HHmmss}.png"));
-            _vm.ShowToast(@"Copied! Paste it anywhere. Also saved to Pictures\Roomy.");
+            _vm.ShowToast(Loc.T("ShareCopied"));
         }
         catch (Exception ex)
         {
-            _vm.ShowToast("Couldn't make the image: " + ex.Message);
+            _vm.ShowToast(Loc.T("ShareFailed", ex.Message));
         }
     }
 

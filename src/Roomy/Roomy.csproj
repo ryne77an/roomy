@@ -9,7 +9,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Roomy</RootNamespace>
     <AssemblyName>Roomy</AssemblyName>
-    <Version>0.1.2</Version>
+    <Version>0.2.0</Version>
     <Product>Roomy</Product>
     <Company>krezio</Company>
     <Authors>krezio</Authors>
@@ -25,6 +25,7 @@
     <Using Remove="System.Windows.Forms" />
     <Using Remove="System.Drawing" />
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
+    <InternalsVisibleTo Include="Roomy.Tests" />
   </ItemGroup>
 
   <PropertyGroup Condition="Exists('Assets\roomy.ico')">

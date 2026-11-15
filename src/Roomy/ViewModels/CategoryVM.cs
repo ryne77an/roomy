@@ -29,7 +29,14 @@ public sealed class CategoryVM : ObservableObject
     public ObservableCollection<ItemVM> Items { get; } = [];
     public IEnumerable<ItemVM> VisibleItems => Items.Take(MaxVisible);
     public bool HasHidden => Items.Count > MaxVisible;
-    public string HiddenText => $"+ {Items.Count - MaxVisible} more (included when the box is ticked)";
+    public string HiddenText
+    {
+        get
+        {
+            var hidden = Items.Count - MaxVisible;
+            return Loc.T("HiddenItems", hidden.ToString("N0"), Loc.N(hidden, "FileOne", "FileFew", "FileMany"));
+        }
+    }
 
     public string Title => Model.Title;
     public string Description => Model.Description;
@@ -48,8 +55,8 @@ public sealed class CategoryVM : ObservableObject
     public bool HasDetails => ShowItemList || IsSettings || IsBlocked;
 
     public long Size => Model.Size;
-    public string SizeText => Model.Blocked ? "N/A" : Format.Bytes(Size);
-    public string SafetyText => Model.Blocked ? "NEEDS ADMIN" : IsSafe ? "SAFE" : "YOUR CALL";
+    public string SizeText => Model.Blocked ? "—" : Format.Bytes(Size);
+    public string SafetyText => Model.Blocked ? Loc.T("BadgeNeedsAdmin") : IsSafe ? Loc.T("BadgeSafe") : Loc.T("BadgeReview");
     public Brush BadgeBg => Res.Brush(Model.Blocked ? "MutedSoftBrush" : IsSafe ? "AccentSoftBrush" : "WarnSoftBrush");
     public Brush BadgeFg => Res.Brush(Model.Blocked ? "MutedBrush" : IsSafe ? "AccentBrush" : "WarnBrush");
     public Brush IconBrush => Res.Brush(Model.Blocked ? "MutedBrush" : IsSafe ? "AccentBrush" : "WarnBrush");

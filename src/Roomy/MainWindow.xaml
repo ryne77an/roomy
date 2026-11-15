@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:c="clr-namespace:Roomy.Controls"
+        xmlns:loc="clr-namespace:Roomy.Core"
         Title="Roomy" Width="1160" Height="780" MinWidth="920" MinHeight="660"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BgBrush}"
@@ -53,9 +54,9 @@
                            VerticalAlignment="Center" Margin="0,0,10,0" />
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Style="{StaticResource SecondaryButton}" Padding="12,6" FontSize="12.5" Margin="0,0,6,0"
-                            Content="Uninstall in Steam" Command="{Binding UninstallCommand}"
+                            Content="{loc:Tr UninstallInSteam}" Command="{Binding UninstallCommand}"
                             Visibility="{Binding IsSteam, Converter={StaticResource VisIf}}" />
-                    <Button Style="{StaticResource IconButton}" Content="&#xE8B7;" ToolTip="Show in File Explorer"
+                    <Button Style="{StaticResource IconButton}" Content="&#xE8B7;" ToolTip="{loc:Tr TooltipShowInExplorer}"
                             Command="{Binding RevealCommand}" />
                 </StackPanel>
             </Grid>
@@ -108,7 +109,7 @@
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="38,6,0,6"
                                         Visibility="{Binding IsBlocked, Converter={StaticResource VisIf}}">
-                                <Button Style="{StaticResource SecondaryButton}" Padding="14,8" Content="Restart as admin"
+                                <Button Style="{StaticResource SecondaryButton}" Padding="14,8" Content="{loc:Tr RestartAsAdmin}"
                                         Command="{Binding RestartAdminCommand}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="38,6,0,6"
@@ -116,10 +117,10 @@
                                 <Button Style="{StaticResource SecondaryButton}" Padding="14,8" Command="{Binding OpenSettingsCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="&#xE8A7;" Style="{StaticResource Icon}" FontSize="12" />
-                                        <TextBlock Text="Remove it with Windows" Margin="8,0,0,0" />
+                                        <TextBlock Text="{loc:Tr RemoveWithWindows}" Margin="8,0,0,0" />
                                     </StackPanel>
                                 </Button>
-                                <TextBlock Text="Settings → Storage → Temporary files → Previous Windows installation(s)"
+                                <TextBlock Text="{loc:Tr WindowsCleanupPath}"
                                            Foreground="{StaticResource FaintBrush}" FontSize="12" VerticalAlignment="Center"
                                            Margin="14,0,0,0" TextWrapping="Wrap" />
                             </StackPanel>
@@ -160,7 +161,7 @@
                                VerticalAlignment="Center" HorizontalAlignment="Right" />
                     <TextBlock Grid.Column="4" Text="{Binding PercentText}" FontSize="12" Foreground="{StaticResource FaintBrush}"
                                VerticalAlignment="Center" HorizontalAlignment="Right" />
-                    <Button Grid.Column="5" Style="{StaticResource IconButton}" Content="&#xE8A7;" ToolTip="Open in File Explorer"
+                    <Button Grid.Column="5" Style="{StaticResource IconButton}" Content="&#xE8A7;" ToolTip="{loc:Tr TooltipOpenInExplorer}"
                             HorizontalAlignment="Right" Command="{Binding RevealCommand}"
                             Visibility="{Binding CanReveal, Converter={StaticResource VisIf}}" />
                 </Grid>
@@ -184,15 +185,18 @@
                     <TextBlock Text="Roomy" FontWeight="SemiBold" FontSize="13" Margin="10,0,0,0" VerticalAlignment="Center" />
                     <Border Margin="10,0,0,0" CornerRadius="6" Padding="7,2" Background="{StaticResource WarnSoftBrush}"
                             VerticalAlignment="Center" Visibility="{Binding ShowAdminBadge, Converter={StaticResource VisIf}}">
-                        <TextBlock Text="ADMIN" FontSize="10" FontWeight="Bold" Foreground="{StaticResource WarnBrush}" />
+                        <TextBlock Text="{loc:Tr BadgeAdmin}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource WarnBrush}" />
                     </Border>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <Button Style="{StaticResource ChromeButton}" Content="&#xE713;" ToolTip="Settings"
-                            AutomationProperties.Name="Settings" Command="{Binding SettingsCommand}" />
-                    <Button Style="{StaticResource ChromeButton}" Content="&#xE921;" Click="Min_Click" />
-                    <Button x:Name="MaxButton" Style="{StaticResource ChromeButton}" Content="&#xE922;" Click="Max_Click" />
-                    <Button Style="{StaticResource CloseButton}" Content="&#xE8BB;" Click="Close_Click" />
+                    <Button Style="{StaticResource ChromeButton}" Content="&#xE713;" ToolTip="{loc:Tr TooltipSettings}"
+                            AutomationProperties.Name="{loc:Tr TooltipSettings}" Command="{Binding SettingsCommand}" />
+                    <Button Style="{StaticResource ChromeButton}" Content="&#xE921;" Click="Min_Click"
+                            AutomationProperties.Name="{loc:Tr TooltipMinimize}" />
+                    <Button x:Name="MaxButton" Style="{StaticResource ChromeButton}" Content="&#xE922;" Click="Max_Click"
+                            AutomationProperties.Name="{loc:Tr TooltipMaximize}" />
+                    <Button Style="{StaticResource CloseButton}" Content="&#xE8BB;" Click="Close_Click"
+                            AutomationProperties.Name="{loc:Tr TooltipClose}" />
                 </StackPanel>
             </Grid>
 
@@ -201,10 +205,10 @@
                 <!-- ============ HOME ============ -->
                 <Grid x:Name="HomeView">
                     <StackPanel MaxWidth="780" Margin="48,0,48,44" VerticalAlignment="Center">
-                        <TextBlock Text="Let's make some room." FontSize="44" FontWeight="Bold"
+                        <TextBlock Text="{loc:Tr HomeTitle}" FontSize="44" FontWeight="Bold"
                                    FontFamily="{StaticResource DisplayFont}" />
                         <TextBlock Margin="0,10,0,30" FontSize="16.5" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap"
-                                   Text="Roomy finds what's filling up your PC and tells you, in plain English, what's safe to delete." />
+                                   Text="{loc:Tr HomeSubtitle}" />
 
                         <Border Style="{StaticResource Card}" Padding="28" DataContext="{Binding SystemDrive}">
                             <Grid>
@@ -273,10 +277,10 @@
                             <Button Style="{StaticResource PrimaryButton}" Command="{Binding ScanCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xE721;" Style="{StaticResource Icon}" FontSize="15" />
-                                    <TextBlock Text="Scan my PC" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{loc:Tr HomeScan}" Margin="10,0,0,0" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
-                            <TextBlock Text="Takes a few seconds. Nothing gets deleted until you say so."
+                            <TextBlock Text="{loc:Tr HomeScanHint}"
                                        Foreground="{StaticResource FaintBrush}" FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0" />
                         </StackPanel>
                     </StackPanel>
@@ -289,12 +293,12 @@
                             <c:Spinner Thickness="7" />
                             <TextBlock Text="&#xE721;" Style="{StaticResource Icon}" FontSize="30" Foreground="{StaticResource AccentBrush}" />
                         </Grid>
-                        <TextBlock Text="Looking around your PC…" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"
+                        <TextBlock Text="{loc:Tr ScanTitle}" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"
                                    Margin="0,28,0,8" FontFamily="{StaticResource DisplayFont}" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="Found " Foreground="{StaticResource MutedBrush}" FontSize="15" />
+                            <TextBlock Text="{loc:Tr ScanFoundPrefix}" Foreground="{StaticResource MutedBrush}" FontSize="15" />
                             <c:AnimatedBytes Bytes="{Binding ScanFound}" Foreground="{StaticResource AccentBrush}" FontSize="15" FontWeight="SemiBold" Duration="500" />
-                            <TextBlock Text=" you can safely clean so far" Foreground="{StaticResource MutedBrush}" FontSize="15" />
+                            <TextBlock Text="{loc:Tr ScanFoundSuffix}" Foreground="{StaticResource MutedBrush}" FontSize="15" />
                         </StackPanel>
                         <Border Style="{StaticResource Card}" Margin="0,28,0,0" Padding="16,12">
                             <ItemsControl ItemsSource="{Binding ScanSteps}" ItemTemplate="{StaticResource ScanStepTemplate}">
@@ -322,19 +326,19 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel>
-                            <TextBlock Text="We found" FontSize="15" Foreground="{StaticResource MutedBrush}" />
+                            <TextBlock Text="{loc:Tr ResultsWeFound}" FontSize="15" Foreground="{StaticResource MutedBrush}" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                                 <c:AnimatedBytes Bytes="{Binding SafeTotal}" FontSize="50" FontWeight="Bold" Duration="1200"
                                                  FontFamily="{StaticResource DisplayFont}" Foreground="{StaticResource AccentGradient}" />
-                                <TextBlock Text="safe to clean" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Bottom" Margin="14,0,0,11" />
+                                <TextBlock Text="{loc:Tr ResultsSafeToClean}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Bottom" Margin="14,0,0,11" />
                             </StackPanel>
                             <TextBlock Text="{Binding ReviewSummary}" FontSize="13" Foreground="{StaticResource FaintBrush}" />
                         </StackPanel>
                         <Border Grid.Column="1" VerticalAlignment="Bottom" CornerRadius="12" Padding="4"
                                 Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1">
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton Style="{StaticResource SegmentTab}" GroupName="tabs" Content="Cleanup" IsChecked="{Binding IsCleanupTab}" />
-                                <RadioButton Style="{StaticResource SegmentTab}" GroupName="tabs" Content="Space map" IsChecked="{Binding IsSpaceTab}" />
+                                <RadioButton Style="{StaticResource SegmentTab}" GroupName="tabs" Content="{loc:Tr TabCleanup}" IsChecked="{Binding IsCleanupTab}" />
+                                <RadioButton Style="{StaticResource SegmentTab}" GroupName="tabs" Content="{loc:Tr TabSpaceMap}" IsChecked="{Binding IsSpaceTab}" />
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -354,18 +358,18 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="&#xEA18;" Style="{StaticResource Icon}" FontSize="18" Foreground="{StaticResource WarnBrush}" />
                                     <StackPanel Grid.Column="1" Margin="14,0" VerticalAlignment="Center">
-                                        <TextBlock Text="Windows keeps some of the biggest leftovers locked." FontWeight="SemiBold" />
-                                        <TextBlock Text="Restart Roomy as admin to check Windows Update files too." FontSize="13"
+                                        <TextBlock Text="{loc:Tr AdminBannerTitle}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{loc:Tr AdminBannerBody}" FontSize="13"
                                                    Foreground="{StaticResource MutedBrush}" Margin="0,2,0,0" />
                                     </StackPanel>
                                     <Button Grid.Column="2" Style="{StaticResource SecondaryButton}" Padding="14,8"
-                                            Content="Restart as admin" Command="{Binding RestartAdminCommand}" />
+                                            Content="{loc:Tr RestartAsAdmin}" Command="{Binding RestartAdminCommand}" />
                                 </Grid>
                             </Border>
                             <StackPanel Margin="0,40,0,0" HorizontalAlignment="Center"
                                         Visibility="{Binding NothingFound, Converter={StaticResource VisIf}}">
-                                <TextBlock Text="Your PC is already squeaky clean ✨" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" />
-                                <TextBlock Text="Check the Space map tab to see what's actually using your space."
+                                <TextBlock Text="{loc:Tr NothingFoundTitle}" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                                <TextBlock Text="{loc:Tr NothingFoundBody}"
                                            Foreground="{StaticResource MutedBrush}" Margin="0,6,0,0" HorizontalAlignment="Center" />
                             </StackPanel>
                             <ItemsControl ItemsSource="{Binding Categories}" ItemTemplate="{StaticResource CategoryTemplate}" />
@@ -414,7 +418,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Button Style="{StaticResource IconButton}" Content="&#xE72B;" Command="{Binding UpCommand}"
-                                            IsEnabled="{Binding CanGoUp}" ToolTip="Up one folder" />
+                                            IsEnabled="{Binding CanGoUp}" ToolTip="{loc:Tr TooltipUp}" />
                                     <ItemsControl Grid.Column="1" ItemsSource="{Binding Crumbs}" VerticalAlignment="Center" Margin="6,0,0,0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -441,15 +445,15 @@
                                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
                                                 Visibility="{Binding ShowEmpty, Converter={StaticResource VisIf}}">
                                         <TextBlock Text="&#xE8B7;" Style="{StaticResource Icon}" FontSize="34" Foreground="{StaticResource FaintBrush}" />
-                                        <TextBlock Text="See exactly what's using your space" FontSize="17" FontWeight="SemiBold"
+                                        <TextBlock Text="{loc:Tr SpaceEmptyTitle}" FontSize="17" FontWeight="SemiBold"
                                                    Margin="0,14,0,4" HorizontalAlignment="Center" />
-                                        <TextBlock Text="Pick a drive and hit Scan. Big drives can take a minute."
+                                        <TextBlock Text="{loc:Tr SpaceEmptyBody}"
                                                    Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
                                                 Visibility="{Binding IsScanning, Converter={StaticResource VisIf}}">
                                         <c:Spinner Width="56" Height="56" Thickness="5" />
-                                        <TextBlock Text="Mapping your drive…" FontSize="17" FontWeight="SemiBold" Margin="0,18,0,4" HorizontalAlignment="Center" />
+                                        <TextBlock Text="{loc:Tr SpaceScanning}" FontSize="17" FontWeight="SemiBold" Margin="0,18,0,4" HorizontalAlignment="Center" />
                                         <TextBlock Text="{Binding ProgressText}" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" />
                                     </StackPanel>
                                     <ScrollViewer Padding="8,0,8,10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
@@ -467,15 +471,15 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <StackPanel Margin="18,18,18,8">
-                                    <TextBlock Text="Biggest files" FontSize="15" FontWeight="SemiBold" />
-                                    <TextBlock Text="The single files taking up the most room." FontSize="12"
+                                    <TextBlock Text="{loc:Tr SpaceBiggestTitle}" FontSize="15" FontWeight="SemiBold" />
+                                    <TextBlock Text="{loc:Tr SpaceBiggestBody}" FontSize="12"
                                                Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0" />
                                 </StackPanel>
                                 <ScrollViewer Grid.Row="1" Padding="8,0,8,10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl ItemsSource="{Binding BigFiles}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Button Style="{StaticResource RowButton}" Command="{Binding RevealCommand}" ToolTip="Show in File Explorer">
+                                                <Button Style="{StaticResource RowButton}" Command="{Binding RevealCommand}" ToolTip="{loc:Tr TooltipShowInExplorer}">
                                                     <Grid Height="52" Margin="10,0">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*" />
@@ -502,11 +506,11 @@
                             Visibility="{Binding IsCleanupTab, Converter={StaticResource VisIf}}">
                         <Grid Margin="40,14">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Selected to clean" FontSize="12" Foreground="{StaticResource MutedBrush}" />
+                                <TextBlock Text="{loc:Tr SelectedToClean}" FontSize="12" Foreground="{StaticResource MutedBrush}" />
                                 <c:AnimatedBytes Bytes="{Binding SelectedTotal}" FontSize="22" FontWeight="Bold" Duration="450" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Style="{StaticResource SecondaryButton}" Content="Scan again" Command="{Binding ScanCommand}" Margin="0,0,10,0" />
+                                <Button Style="{StaticResource SecondaryButton}" Content="{loc:Tr ScanAgain}" Command="{Binding ScanCommand}" Margin="0,0,10,0" />
                                 <Button Style="{StaticResource PrimaryButton}" Command="{Binding CleanCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="&#xE74D;" Style="{StaticResource Icon}" FontSize="14" />
@@ -525,12 +529,12 @@
                             <c:Spinner Thickness="7" />
                             <TextBlock Text="&#xE74D;" Style="{StaticResource Icon}" FontSize="30" Foreground="{StaticResource AccentBrush}" />
                         </Grid>
-                        <TextBlock Text="Cleaning up…" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"
+                        <TextBlock Text="{loc:Tr CleanTitle}" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"
                                    Margin="0,28,0,8" FontFamily="{StaticResource DisplayFont}" />
                         <TextBlock Text="{Binding CleanStep}" Foreground="{StaticResource MutedBrush}" FontSize="15" HorizontalAlignment="Center" />
                         <c:UsageBar Height="8" Margin="0,28,0,0" Target="{Binding CleanProgress}"
                                     Fill="{StaticResource AccentGradient}" Track="{StaticResource Surface2Brush}" />
-                        <TextBlock Text="Files that are in use get skipped, never forced." Foreground="{StaticResource FaintBrush}"
+                        <TextBlock Text="{loc:Tr CleanHint}" Foreground="{StaticResource FaintBrush}"
                                    FontSize="12.5" HorizontalAlignment="Center" Margin="0,14,0,0" />
                     </StackPanel>
                 </Grid>
@@ -545,7 +549,7 @@
                             </Border.RenderTransform>
                             <TextBlock Text="&#xE73E;" Style="{StaticResource Icon}" FontSize="36" Foreground="#111113" />
                         </Border>
-                        <TextBlock Text="You just freed" FontSize="18" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" Margin="0,26,0,0" />
+                        <TextBlock Text="{loc:Tr DoneFreed}" FontSize="18" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" Margin="0,26,0,0" />
                         <c:AnimatedBytes Bytes="{Binding Freed}" FontSize="78" FontWeight="Bold" FontFamily="{StaticResource DisplayFont}"
                                          Foreground="{StaticResource AccentGradient}" HorizontalAlignment="Center" Duration="1500" />
                         <TextBlock Text="{Binding DoneSubtitle}" FontSize="15" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" />
@@ -553,13 +557,13 @@
                         <Border Style="{StaticResource Card}" Padding="22,18" Margin="0,26,0,0">
                             <StackPanel>
                                 <Grid>
-                                    <TextBlock Text="Before" FontSize="12" Foreground="{StaticResource MutedBrush}" />
+                                    <TextBlock Text="{loc:Tr Before}" FontSize="12" Foreground="{StaticResource MutedBrush}" />
                                     <TextBlock Text="{Binding BeforeText}" FontSize="12" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Right" />
                                 </Grid>
                                 <c:UsageBar Height="10" Margin="0,8,0,16" Target="{Binding BeforeFraction}" Fill="{Binding BeforeBrush}"
                                             Track="{StaticResource Surface2Brush}" />
                                 <Grid>
-                                    <TextBlock Text="After" FontSize="12" Foreground="{StaticResource MutedBrush}" />
+                                    <TextBlock Text="{loc:Tr After}" FontSize="12" Foreground="{StaticResource MutedBrush}" />
                                     <TextBlock Text="{Binding AfterText}" FontSize="12" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right" />
                                 </Grid>
                                 <c:UsageBar Height="10" Margin="0,8,0,0" Target="{Binding AfterFraction}" Fill="{StaticResource AccentBrush}"
@@ -574,10 +578,10 @@
                             <Button Style="{StaticResource PrimaryButton}" Command="{Binding ShareCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xE72D;" Style="{StaticResource Icon}" FontSize="14" />
-                                    <TextBlock Text="Share my result" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{loc:Tr ShareResult}" Margin="10,0,0,0" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
-                            <Button Style="{StaticResource SecondaryButton}" Content="Done" Command="{Binding HomeCommand}" Margin="10,0,0,0" Padding="22,12" />
+                            <Button Style="{StaticResource SecondaryButton}" Content="{loc:Tr Done}" Command="{Binding HomeCommand}" Margin="10,0,0,0" Padding="22,12" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -593,7 +597,7 @@
                     <TextBlock Text="{Binding ConfirmBody}" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap"
                                Margin="0,10,0,22" LineHeight="21" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Style="{StaticResource SecondaryButton}" Content="Cancel" Command="{Binding ConfirmNoCommand}" Margin="0,0,10,0" />
+                        <Button Style="{StaticResource SecondaryButton}" Content="{loc:Tr Cancel}" Command="{Binding ConfirmNoCommand}" Margin="0,0,10,0" />
                         <Button Style="{StaticResource PrimaryButton}" Content="{Binding ConfirmYesText}" Command="{Binding ConfirmYesCommand}" Padding="20,12" />
                     </StackPanel>
                 </StackPanel>

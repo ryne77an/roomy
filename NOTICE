@@ -1,0 +1,24 @@
+Roomy — Russian build
+=====================
+
+This is an unofficial Russian-language build of Roomy, based on the original
+project by krezio:
+
+    https://github.com/krezio/roomy
+
+Original work Copyright (c) 2026 krezio, licensed under the MIT License
+(see LICENSE). All credit for the application, its design and its original
+English text belongs to the original author.
+
+Changes in this build
+---------------------
+
+* Russian user interface (English kept; language follows Windows or --lang).
+* Safety fixes: redirected %TEMP% is ignored, Windows Update cache is skipped
+  while updates are being installed, OneDrive is a protected folder.
+* Settings window layout fix (long hints wrapped and clipped).
+* Release checksums (SHA256SUMS.txt) and bilingual installer wizard.
+
+The MIT License permits redistribution and modification as long as the
+copyright notice and permission notice are retained. They are: see LICENSE.
+This build is not affiliated with or endorsed by the original author.

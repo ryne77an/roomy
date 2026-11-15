@@ -9,8 +9,16 @@
   See what's eating your space in plain English, and clean the safe stuff in one click.
 </p>
 
+> **Unofficial Russian build.** This fork adds a Russian user interface and a few safety and
+> quality fixes on top of [Roomy by krezio](https://github.com/krezio/roomy) (MIT).
+> All credit for the original application, its design and its English text belongs to the
+> original author. See [NOTICE](NOTICE) for the exact list of changes.
+>
+> Русская сборка: интерфейс полностью переведён, язык определяется по Windows или флагом
+> `--lang ru|en`; установщик предлагает выбор языка.
+
 <p align="center">
-  <a href="https://github.com/krezio/roomy/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/krezio/roomy?label=download&color=f4f4f5&labelColor=18181b"></a>
+  <a href="https://github.com/ryne77an/roomy/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/ryne77an/roomy?label=download&color=f4f4f5&labelColor=18181b"></a>
   <a href="https://github.com/krezio/roomy/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/krezio/roomy?style=flat&color=f4f4f5&labelColor=18181b"></a>
   <img alt="Windows 10 & 11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-f4f4f5?labelColor=18181b">
   <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-f4f4f5?labelColor=18181b">
@@ -22,7 +30,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/krezio/roomy/releases/latest/download/Roomy-Setup.exe"><b>⬇ Download for Windows</b></a> &nbsp;·&nbsp;
+  <a href="https://github.com/ryne77an/roomy/releases/latest/download/Roomy-Setup.exe"><b>⬇ Download for Windows</b></a> &nbsp;·&nbsp;
   <a href="https://roomy.krezio.xyz">Website &amp; live demo</a> &nbsp;·&nbsp;
   <a href="https://roomy.krezio.xyz/guides/">Guides</a>
 </p>
@@ -89,11 +97,13 @@ The choice is made once at startup, so shortcuts, the installer and the startup 
 
 ## Install
 
-Grab **Roomy-Setup.exe** (installs per-user, no admin needed) or **Roomy-portable.exe** from [Releases](https://github.com/krezio/roomy/releases/latest). Each release also publishes `SHA256SUMS.txt`; verify a download before running it:
+Grab **Roomy-Setup.exe** (installs per-user, no admin needed) or **Roomy-portable.exe** from [Releases](https://github.com/ryne77an/roomy/releases/latest). Each release also publishes `SHA256SUMS.txt`; verify a download before running it:
 
 ```powershell
 Get-FileHash .\Roomy-Setup.exe -Algorithm SHA256
 ```
+
+The installer asks for the wizard language (English or Russian) and passes that choice to the Start menu shortcut, so the app opens in the language you picked. The app on its own still follows the Windows display language.
 
 The binaries are not code-signed yet, so Windows SmartScreen will ask for confirmation the first time. Check the hash against the release notes if you want to be sure the file is the one CI built.
 

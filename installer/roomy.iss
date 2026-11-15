@@ -2,6 +2,11 @@
 #ifndef AppVersion
   #define AppVersion "0.2.0"
 #endif
+; Windows file versions must be numeric: "0.2.0" -> "0.2.0.0". CI passes this
+; separately so tags like "v0.2.0-ru" still produce a valid version resource.
+#ifndef AppVersionNumeric
+  #define AppVersionNumeric "0.2.0.0"
+#endif
 
 [Setup]
 AppId={{6B0F3B2E-6C1A-4C7E-9E3B-52A1F0D7C6A4}
@@ -13,7 +18,7 @@ AppPublisherURL=https://github.com/krezio/roomy
 AppSupportURL=https://github.com/krezio/roomy/issues
 AppUpdatesURL=https://github.com/krezio/roomy/releases
 AppComments=Unofficial Russian build of Roomy. Original project: https://github.com/krezio/roomy
-VersionInfoVersion={#AppVersion}.0
+VersionInfoVersion={#AppVersionNumeric}
 VersionInfoCompany=krezio
 VersionInfoDescription=Roomy Setup
 VersionInfoProductName=Roomy

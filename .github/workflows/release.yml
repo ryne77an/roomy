@@ -30,7 +30,9 @@ jobs:
         run: |
           if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
           $version = "${{ github.ref_name }}".TrimStart("v")
-          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" "/DAppVersion=$version" installer/roomy.iss
+          # "0.2.0" and "0.2.0-ru" both need a numeric resource version: "0.2.0.0".
+          $numeric = ($version -replace '[^0-9.].*$', '').TrimEnd('.') + ".0"
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" "/DAppVersion=$version" "/DAppVersionNumeric=$numeric" installer/roomy.iss
 
       - name: Checksums
         shell: pwsh

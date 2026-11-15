@@ -21,16 +21,22 @@ public sealed class DesktopController : IDisposable
     bool _disposed;
     public Preferences Preferences { get; private set; }
     public bool IsDemo => _vm.IsDemo;
-    public bool CanConfigure => IsDemo || !Admin.IsElevated;
+    /// <summary>
+    /// Settings are always editable: an elevated session still saves them for the next normal
+    /// launch, it just doesn't run the background checks itself.
+    /// </summary>
+    public bool CanConfigure => true;
     public string? Status => IsDemo ? Loc.T("StatusDemo") :
-        Admin.IsElevated ? Loc.T("StatusAdmin") : _store.LoadError ?? _notifications.Error;
+        Admin.IsElevated ? Loc.T("StatusElevated") : _store.LoadError ?? _notifications.Error;
 
     public DesktopController(MainWindow window, MainVM vm, Action quit)
     {
         _window = window;
         _vm = vm;
         _quit = quit;
-        Preferences = vm.IsDemo || Admin.IsElevated ? new() : _store.Load();
+        // Read the real settings even when elevated: otherwise saving from an elevated session
+        // would silently reset everything the user configured in a normal one.
+        Preferences = vm.IsDemo ? new() : _store.Load();
         _monitor = new(() => Preferences,
             () => _disposed || _vm.State is AppState.Scanning or AppState.Cleaning || _vm.SpaceMap.IsScanning,
             (title, body, tag) => !IsDemo && _notifications.Show(title, body, tag), Save);
@@ -59,7 +65,11 @@ public sealed class DesktopController : IDisposable
 
     void Refresh()
     {
-        if (Preferences.RunInBackground)
+        // The tray and the background timer only make sense in a normal session: elevated
+        // sessions are usually short-lived (a Windows Update scan) and Windows notifications
+        // from an elevated process are unreliable.
+        var backgroundAllowed = IsDemo || !Admin.IsElevated;
+        if (Preferences.RunInBackground && backgroundAllowed)
         {
             EnsureTray();
             if (!IsDemo && (Preferences.LowSpaceAlerts || Preferences.WeeklyChecks)) _notifications.Initialize();
@@ -69,7 +79,8 @@ public sealed class DesktopController : IDisposable
             DisposeTray();
         }
         if (!Preferences.RunInBackground || (!Preferences.LowSpaceAlerts && !Preferences.WeeklyChecks)) _notifications.Clear();
-        if (!IsDemo) _monitor.Refresh();
+        if (!IsDemo && !Admin.IsElevated) _monitor.Refresh();
+        else _monitor.CancelScan();
     }
 
     void EnsureTray()
@@ -158,7 +169,8 @@ public sealed class DesktopController : IDisposable
     void OnClosing(object? sender, CancelEventArgs e)
     {
         if (_quitting) return;
-        if (Preferences.RunInBackground)
+        // An elevated session has no tray timer to keep alive, so closing it really closes it.
+        if (Preferences.RunInBackground && !Admin.IsElevated)
         {
             e.Cancel = true;
             _settingsWindow?.Close();

@@ -67,7 +67,7 @@ Open **Settings** using the gear in the title bar. Background features are optio
 - **Weekly cache checks:** starting one week after you enable them, check temporary files, browser caches, app caches and crash reports. Checks wait for five minutes of inactivity and pause on battery power or when you start using the PC. They stop after five minutes and can try again later.
 - **Reminders:** at most one per day across both kinds of check, with a one-day pause and Windows notification controls. Weekly reminders require at least 1 GB of cleanup candidates. Review always opens a fresh scan; nothing is automatically deleted.
 
-Preferences, reminder cooldowns and snooze times stay in `%LOCALAPPDATA%\Roomy\settings.json`. Background checks run while Roomy is open or in the tray. **Quit Roomy** stops them until the next launch. Elevated sessions do not run background checks. Demo settings are temporary and do not register startup or send Windows notifications.
+Preferences, reminder cooldowns and snooze times stay in `%LOCALAPPDATA%\Roomy\settings.json`. Background checks run while Roomy is open or in the tray. **Quit Roomy** stops them until the next launch. Elevated sessions do not run background checks, but settings can still be edited — they are saved and apply on the next normal launch. Demo settings are temporary and do not register startup or send Windows notifications.
 
 <p align="center">
   <img src="docs/shots/05-space-map.png" alt="Space map" width="49%">

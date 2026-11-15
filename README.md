@@ -1,179 +1,180 @@
 <p align="center">
-  <img src="site/assets/icon-512.png" width="96" alt="Roomy logo">
+  <img src="site/assets/icon-512.png" width="96" alt="Логотип Roomy">
 </p>
 
 <h1 align="center">Roomy</h1>
 
 <p align="center">
-  <b>Your C: drive is full. Let's fix that.</b><br>
-  See what's eating your space in plain English, and clean the safe stuff in one click.
-</p>
-
-> **Unofficial Russian build.** This fork adds a Russian user interface and a few safety and
-> quality fixes on top of [Roomy by krezio](https://github.com/krezio/roomy) (MIT).
-> All credit for the original application, its design and its English text belongs to the
-> original author. See [NOTICE](NOTICE) for the exact list of changes.
->
-> Русская сборка: интерфейс полностью переведён, язык определяется по Windows или флагом
-> `--lang ru|en`; установщик предлагает выбор языка.
-
-<p align="center">
-  <a href="https://github.com/ryne77an/roomy/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/ryne77an/roomy?label=download&color=f4f4f5&labelColor=18181b"></a>
-  <a href="https://github.com/krezio/roomy/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/krezio/roomy?style=flat&color=f4f4f5&labelColor=18181b"></a>
-  <img alt="Windows 10 & 11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-f4f4f5?labelColor=18181b">
-  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-f4f4f5?labelColor=18181b">
-  <a href="https://roomy.krezio.xyz"><img alt="Website" src="https://img.shields.io/badge/site-roomy.krezio.xyz-f4f4f5?labelColor=18181b"></a>
+  <b>Диск C: заполнен. Давайте это исправим.</b><br>
+  Показывает, что занимает место, простыми словами — и убирает безопасное одним нажатием.
 </p>
 
 <p align="center">
-  <a href="https://roomy.krezio.xyz"><img src="docs/roomy-demo.gif" alt="Roomy scanning a PC, finding 32.5 GB safe to clean and freeing it" width="860"></a>
+  <a href="README.en.md">English</a> · <b>Русский</b>
+</p>
+
+> **Неофициальная русская сборка.** Это форк [Roomy от krezio](https://github.com/krezio/roomy) (MIT):
+> добавлены русский интерфейс и несколько исправлений безопасности и качества.
+> Весь оригинальный код, дизайн и английские тексты принадлежат автору оригинала.
+> Полный список изменений — в [NOTICE](NOTICE).
+
+<p align="center">
+  <a href="https://github.com/ryne77an/roomy/releases/latest"><img alt="Скачать" src="https://img.shields.io/github/v/release/ryne77an/roomy?label=download&color=f4f4f5&labelColor=18181b"></a>
+  <a href="https://github.com/krezio/roomy/stargazers"><img alt="Звёзды GitHub" src="https://img.shields.io/github/stars/krezio/roomy?style=flat&color=f4f4f5&labelColor=18181b"></a>
+  <img alt="Windows 10 и 11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-f4f4f5?labelColor=18181b">
+  <img alt="Лицензия: MIT" src="https://img.shields.io/badge/license-MIT-f4f4f5?labelColor=18181b">
+  <a href="https://roomy.krezio.xyz"><img alt="Сайт" src="https://img.shields.io/badge/site-roomy.krezio.xyz-f4f4f5?labelColor=18181b"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ryne77an/roomy/releases/latest/download/Roomy-Setup.exe"><b>⬇ Download for Windows</b></a> &nbsp;·&nbsp;
-  <a href="https://roomy.krezio.xyz">Website &amp; live demo</a> &nbsp;·&nbsp;
-  <a href="https://roomy.krezio.xyz/guides/">Guides</a>
+  <a href="https://roomy.krezio.xyz"><img src="docs/roomy-demo.gif" alt="Roomy сканирует компьютер, находит 32,5 ГБ безопасного к удалению и освобождает их" width="860"></a>
 </p>
 
-> ⭐ **If Roomy freed up space for you, a star helps other people find it.** It takes one click and it genuinely helps.
+<p align="center">
+  <a href="https://github.com/ryne77an/roomy/releases/latest/download/Roomy-Setup.exe"><b>⬇ Скачать для Windows</b></a> &nbsp;·&nbsp;
+  <a href="https://roomy.krezio.xyz">Сайт и живое демо</a> &nbsp;·&nbsp;
+  <a href="https://roomy.krezio.xyz/guides/">Руководства</a>
+</p>
 
-## Why
+> ⭐ **Если Roomy освободила вам место, звезда поможет другим её найти.** Это один клик, и он правда помогает.
 
-Most cleaners stick to temp files and the Recycle Bin, and Windows' own tools miss a lot. Roomy also goes after the space they usually skip (GPU shader caches, app caches, Windows Update leftovers, forgotten Steam games), and it tells you **what** each thing is, **why** it's there and **whether it's safe** before you touch anything. Free, offline, open source.
+## Зачем
 
-## What it finds
+Большинство чистильщиков ограничиваются временными файлами и Корзиной, а встроенные средства Windows многое пропускают. Roomy добирается и до того, что обычно остаётся: кэш шейдеров GPU, кэш приложений, остатки обновлений Windows, забытые игры Steam. И перед каждым действием объясняет, **что** это, **почему** оно здесь и **безопасно ли** его удалять. Бесплатно, офлайн, с открытым кодом.
 
-| | Category | Default |
+## Что находит
+
+| | Категория | По умолчанию |
 |---|---|---|
-| ♻️ | Windows Update leftovers, Delivery Optimization, Windows temp (needs admin) | ✅ Safe |
-| 🧩 | App caches: Discord, VS Code, Slack, Teams, Steam web, npm, pip, Yarn, NuGet | ✅ Safe |
-| 🌐 | Browser caches: Chrome, Edge, Brave, Vivaldi, Firefox, Opera | ✅ Safe |
-| 🕒 | Temp files (older than a day), crash dumps, error reports, Recycle Bin | ✅ Safe |
-| 🎨 | GPU shader caches (NVIDIA, AMD, Intel, DirectX, Steam) | Safe, unticked |
-| 📦 | Old installers & big untouched downloads | Your call |
-| 🎮 | Steam games you haven't played in 2+ months (uninstalls through Steam) | Your call |
-| 🪟 | `Windows.old` (opens Windows' own cleanup) | Your call |
+| ♻️ | Остатки обновлений Windows, оптимизация доставки, временная папка Windows (нужен админ) | ✅ Безопасно |
+| 🧩 | Кэш приложений: Discord, VS Code, Slack, Teams, Steam, npm, pip, Yarn, NuGet | ✅ Безопасно |
+| 🌐 | Кэш браузеров: Chrome, Edge, Brave, Vivaldi, Firefox, Opera | ✅ Безопасно |
+| 🕒 | Временные файлы старше суток, дампы сбоев, отчёты об ошибках, Корзина | ✅ Безопасно |
+| 🎨 | Кэш шейдеров GPU (NVIDIA, AMD, Intel, DirectX, Steam) | Безопасно, снято |
+| 📦 | Старые установщики и большие нетронутые загрузки | Решать вам |
+| 🎮 | Игры Steam, в которые не играли 2+ месяца (удаление через Steam) | Решать вам |
+| 🪟 | `Windows.old` (открывает встроенную очистку Windows) | Решать вам |
 
-Plus a **Space map** that lets you click down through any drive folder by folder and see the biggest files on your PC.
+Плюс **карта места**: можно проваливаться по папкам любого диска и видеть самые большие файлы на компьютере.
 
-## Background checks
+## Фоновые проверки
 
-Open **Settings** using the gear in the title bar. Background features are optional and start turned off.
+Откройте **Настройки** шестерёнкой в заголовке окна. Фоновые функции необязательны и изначально выключены.
 
-- **Keep Roomy in the system tray:** closing the window keeps Roomy running. The tray menu lets you open Roomy, scan, pause reminders or quit.
-- **Start with Windows:** launch quietly in the tray when you sign in. Roomy respects startup choices made in Windows Settings and Task Manager.
-- **Low-space alerts:** check your system drive every 30 or 60 minutes. Choose a threshold from 1 to 500 GB (10 GB by default). These checks only read available disk space.
-- **Weekly cache checks:** starting one week after you enable them, check temporary files, browser caches, app caches and crash reports. Checks wait for five minutes of inactivity and pause on battery power or when you start using the PC. They stop after five minutes and can try again later.
-- **Reminders:** at most one per day across both kinds of check, with a one-day pause and Windows notification controls. Weekly reminders require at least 1 GB of cleanup candidates. Review always opens a fresh scan; nothing is automatically deleted.
+- **Оставлять Roomy в трее:** после закрытия окна программа продолжает работать. В меню трея можно открыть Roomy, запустить проверку, поставить напоминания на паузу или выйти.
+- **Запускать при входе в Windows:** тихий старт в трее при входе в систему. Roomy уважает настройки автозагрузки из параметров Windows и диспетчера задач.
+- **Предупреждения о нехватке места:** проверка системного диска каждые 30 или 60 минут. Порог — от 1 до 500 ГБ (по умолчанию 10 ГБ). Проверка читает только объём свободного места.
+- **Недельная проверка кэша:** начинает работать через неделю после включения и проверяет временные файлы, кэш браузеров, кэш приложений и отчёты о сбоях. Ждёт пять минут бездействия и приостанавливается на батарее или когда вы начинаете работать. Останавливается через пять минут и может попробовать позже.
+- **Напоминания:** не больше одного в день на оба типа проверок, с паузой на день и управлением через уведомления Windows. Недельное напоминание требует хотя бы 1 ГБ кандидатов на очистку. «Посмотреть» всегда запускает новую проверку; ничего не удаляется автоматически.
 
-Preferences, reminder cooldowns and snooze times stay in `%LOCALAPPDATA%\Roomy\settings.json`. Background checks run while Roomy is open or in the tray. **Quit Roomy** stops them until the next launch. Elevated sessions do not run background checks. Demo settings are temporary and do not register startup or send Windows notifications.
+Настройки, паузы напоминаний и время отсрочки хранятся в `%LOCALAPPDATA%\Roomy\settings.json`. Фоновые проверки идут, пока Roomy открыта или висит в трее. **Выйти из Roomy** останавливает их до следующего запуска. В сеансе с правами администратора фоновые проверки не выполняются. Демо-настройки временные: автозапуск не регистрируется, уведомления Windows не отправляются.
 
 <p align="center">
-  <img src="docs/shots/05-space-map.png" alt="Space map" width="49%">
-  <img src="docs/shots/07-done.png" alt="Done screen" width="49%">
+  <img src="docs/shots/05-space-map.png" alt="Карта места" width="49%">
+  <img src="docs/shots/07-done.png" alt="Экран «Готово»" width="49%">
 </p>
 
-## Safety
+## Безопасность
 
-- **Read-only scan.** Nothing is deleted until you click *Clean up*.
-- **Your folders are hard-blocked.** Documents, Desktop, Pictures, Videos, Music, Downloads (as a folder), your user folder, OneDrive, Windows and Program Files can never be wiped. See [`FileOps.Guard`](src/Roomy/Core/FileOps.cs).
-- **Never follows junctions or symlinks**, so a link can't point the cleaner somewhere unexpected.
-- **In-use files are skipped**, never forced.
-- **"Your call" items start unticked** and ask for confirmation before permanent deletion.
-- **No network access at all.** No telemetry, no accounts, no updates phoning home.
-- **A redirected `%TEMP%` is ignored.** Cleanup only runs in folders that really look like a temp location (inside your local app data, inside `C:\Windows`, or a folder actually named `Temp`/`Tmp`), so a stray `TMP` variable can't point Roomy at your documents.
-- **Windows Update cache is skipped while Windows is installing updates** (`TiWorker`, `TrustedInstaller` or `wuauclt` running), so a pending update isn't forced to download again.
+- **Проверка только читает.** Ничего не удаляется, пока вы не нажмёте *Очистить*.
+- **Ваши папки защищены жёстко.** Документы, Рабочий стол, Изображения, Видео, Музыка, «Загрузки» целиком, папка пользователя, OneDrive, Windows и Program Files не могут быть очищены. См. [`FileOps.Guard`](src/Roomy/Core/FileOps.cs).
+- **Симлинки и junction'ы не разыменовываются**, поэтому ссылка не уведёт очистку в неожиданное место.
+- **Занятые файлы пропускаются**, принудительно ничего не удаляется.
+- **Пункты «Решать вам» изначально сняты** и требуют подтверждения перед безвозвратным удалением.
+- **Сети нет вообще.** Ни телеметрии, ни аккаунтов, ни обновлений «домой».
+- **Перенаправленный `%TEMP%` игнорируется.** Очистка работает только в папках, которые действительно похожи на временные (внутри локальных данных пользователя, внутри `C:\Windows` или папка с именем `Temp`/`Tmp`), поэтому случайная переменная `TMP` не уведёт Roomy в документы.
+- **Кэш обновлений Windows пропускается, пока Windows устанавливает обновления** (работают `TiWorker`, `TrustedInstaller` или `wuauclt`), чтобы не заставить систему скачивать обновление заново.
 
-## Language
+## Язык
 
-Roomy follows the Windows display language: Russian Windows gets the Russian UI, everything else gets English.
+Roomy следует языку Windows: на русской Windows интерфейс русский, на остальных — английский.
 
 ```bash
-Roomy.exe --lang ru     # force Russian
-Roomy.exe --lang en     # force English
+Roomy.exe --lang ru     # принудительно русский
+Roomy.exe --lang en     # принудительно английский
 ```
 
-The choice is made once at startup, so shortcuts, the installer and the startup entry all keep whatever language the system uses. Every user-facing string lives in [`Loc.cs`](src/Roomy/Core/Loc.cs) (English + Russian side by side); the tests fail if a key is missing, empty or used with different `{0}` placeholders in the two languages.
+Язык выбирается один раз при старте, поэтому ярлыки, установщик и запись автозапуска сохраняют выбранный вариант. Все строки интерфейса лежат в [`Loc.cs`](src/Roomy/Core/Loc.cs) (английский и русский рядом); тесты падают, если ключ пропал, пуст или в двух языках различаются плейсхолдеры `{0}`.
 
-## Install
+## Установка
 
-Grab **Roomy-Setup.exe** (installs per-user, no admin needed) or **Roomy-portable.exe** from [Releases](https://github.com/ryne77an/roomy/releases/latest). Each release also publishes `SHA256SUMS.txt`; verify a download before running it:
+Возьмите **Roomy-Setup.exe** (установка для текущего пользователя, без прав администратора) или **Roomy-portable.exe** из [релизов](https://github.com/ryne77an/roomy/releases/latest). К каждому релизу прикладывается `SHA256SUMS.txt` — сверьте файл перед запуском:
 
 ```powershell
 Get-FileHash .\Roomy-Setup.exe -Algorithm SHA256
 ```
 
-The installer asks for the wizard language (English or Russian) and passes that choice to the Start menu shortcut, so the app opens in the language you picked. The app on its own still follows the Windows display language.
+Установщик спрашивает язык мастера (русский или английский) и передаёт выбор ярлыку в меню «Пуск», поэтому приложение откроется на выбранном языке. Сама программа по-прежнему следует языку Windows.
 
-The binaries are not code-signed yet, so Windows SmartScreen will ask for confirmation the first time. Check the hash against the release notes if you want to be sure the file is the one CI built.
+Бинарники пока не подписаны сертификатом, поэтому SmartScreen при первом запуске попросит подтверждение. Сверьте хеш с релизом, если хотите быть уверены, что файл собрал именно CI.
 
-A Microsoft Store version is on the way.
+Версия для Microsoft Store — в планах.
 
-Requires Windows 10 version 2004 or later, or Windows 11.
+Требуется Windows 10 версии 2004 или новее, либо Windows 11.
 
 <p align="center">
   <video src="site/assets/video/roomy-demo.mp4" width="860" autoplay muted loop playsinline></video>
 </p>
 
-## Microsoft Store build
+## Сборка для Microsoft Store
 
-`packaging/build-msix.ps1` builds `dist/Roomy.msix` for Partner Center (the Store signs it). Pass the identity values from *Product management → Product identity*.
+`packaging/build-msix.ps1` собирает `dist/Roomy.msix` для Partner Center (подписывает его Store). Передайте значения идентификаторов из *Product management → Product identity*.
 
-## Build it yourself
+## Сборка своими руками
 
-Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download).
+Нужен [.NET 10 SDK](https://dotnet.microsoft.com/download).
 
 ```bash
-dotnet run --project src/Roomy                  # run it
-dotnet run --project src/Roomy -- --demo        # fake data, safe for recordings
+dotnet run --project src/Roomy                  # запустить
+dotnet run --project src/Roomy -- --demo        # выдуманные данные, безопасно для записи видео
 ```
 
-Release build (single self-contained exe):
+Релизная сборка (один самодостаточный exe):
 
 ```bash
 dotnet publish src/Roomy -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o dist
 ```
 
-Handy flags:
+Полезные флаги:
 
-| Flag | What it does |
+| Флаг | Что делает |
 |---|---|
-| `--demo` | Uses made-up data. Nothing on your PC is read or touched. |
-| `--lang ru` | Force the Russian UI (default: follow the Windows display language). |
-| `--background` | Starts in the tray if background mode is enabled; otherwise exits. |
-| `--shots <dir>` | Runs the demo and saves screenshots of every screen to `<dir>`. |
-| `--scan-report <file>` | Runs a real, read-only scan and writes the results to a text file. |
-| `--export-icon <file.ico>` | Renders the app icon. |
+| `--demo` | Выдуманные данные. Ничего на компьютере не читается и не трогается. |
+| `--lang ru` | Принудительно русский интерфейс (по умолчанию — язык Windows). |
+| `--background` | Запуск в трее, если включён фоновый режим; иначе выход. |
+| `--shots <dir>` | Прогоняет демо и сохраняет скриншоты всех экранов в `<dir>`. |
+| `--scan-report <file>` | Настоящая проверка только на чтение, результат — в текстовый файл. |
+| `--export-icon <file.ico>` | Рендерит иконку приложения. |
 
-## Project layout
+## Структура проекта
 
 ```
 src/Roomy/
-  Core/         scanning, cleaning, Steam library reader, safety guards (no UI)
-  ViewModels/   state for each screen
-  Controls/     animated bar, count-up text, spinner, logo
-  MainWindow    the whole UI
-installer/      Inno Setup script
+  Core/         сканирование, очистка, чтение библиотеки Steam, защитные проверки (без UI)
+  ViewModels/   состояние экранов
+  Controls/     анимированная полоса, счётчик, спиннер, логотип
+  MainWindow    весь интерфейс
+installer/      скрипт Inno Setup
 site/           roomy.krezio.xyz
 ```
 
-## Contributing
+## Участие
 
-Run the background settings and reminder tests on Windows:
+Запустите тесты фоновых настроек и напоминаний на Windows:
 
 ```bash
 dotnet test tests/Roomy.Tests -c Release
 ```
 
-Desktop lifecycle checks use demo data and temporary in-memory preferences. The optional notification check uses its own test-app identity and removes its notification and registration afterward:
+Проверки жизненного цикла используют демо-данные и временные настройки в памяти. Необязательная проверка уведомлений использует собственную тестовую идентичность приложения и затем удаляет уведомление и регистрацию:
 
 ```bash
 dotnet run --project tests/Roomy.DesktopChecks -c Release
 dotnet run --project tests/Roomy.DesktopChecks -c Release -- --notifications
 ```
 
-Know a cache folder Roomy should clean, or found something it gets wrong? [Open an issue](https://github.com/krezio/roomy/issues) or send a pull request. And if Roomy helped you, a ⭐ really does help others find it.
+Знаете папку кэша, которую Roomy стоит чистить, или нашли ошибку? [Откройте issue](https://github.com/ryne77an/roomy/issues) в этом форке (по исходному проекту — в [krezio/roomy](https://github.com/krezio/roomy/issues)). И если Roomy помогла — ⭐ действительно помогает другим её найти.
 
-## License
+## Лицензия
 
 [MIT](LICENSE) © 2026 krezio

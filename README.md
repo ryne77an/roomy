@@ -9,8 +9,16 @@
   See what's eating your space in plain English, and clean the safe stuff in one click.
 </p>
 
+> **Unofficial Russian build.** This fork adds a Russian user interface and a few safety and
+> quality fixes on top of [Roomy by krezio](https://github.com/krezio/roomy) (MIT).
+> All credit for the original application, its design and its English text belongs to the
+> original author. See [NOTICE](NOTICE) for the exact list of changes.
+>
+> Русская сборка: интерфейс полностью переведён, язык определяется по Windows или флагом
+> `--lang ru|en`; установщик предлагает выбор языка.
+
 <p align="center">
-  <a href="https://github.com/krezio/roomy/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/krezio/roomy?label=download&color=f4f4f5&labelColor=18181b"></a>
+  <a href="https://github.com/ryne77an/roomy/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/ryne77an/roomy?label=download&color=f4f4f5&labelColor=18181b"></a>
   <a href="https://github.com/krezio/roomy/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/krezio/roomy?style=flat&color=f4f4f5&labelColor=18181b"></a>
   <img alt="Windows 10 & 11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-f4f4f5?labelColor=18181b">
   <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-f4f4f5?labelColor=18181b">
@@ -22,7 +30,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/krezio/roomy/releases/latest/download/Roomy-Setup.exe"><b>⬇ Download for Windows</b></a> &nbsp;·&nbsp;
+  <a href="https://github.com/ryne77an/roomy/releases/latest/download/Roomy-Setup.exe"><b>⬇ Download for Windows</b></a> &nbsp;·&nbsp;
   <a href="https://roomy.krezio.xyz">Website &amp; live demo</a> &nbsp;·&nbsp;
   <a href="https://roomy.krezio.xyz/guides/">Guides</a>
 </p>
@@ -68,15 +76,38 @@ Preferences, reminder cooldowns and snooze times stay in `%LOCALAPPDATA%\Roomy\s
 ## Safety
 
 - **Read-only scan.** Nothing is deleted until you click *Clean up*.
-- **Your folders are hard-blocked.** Documents, Desktop, Pictures, Videos, Music, Downloads (as a folder), your user folder, Windows and Program Files can never be wiped. See [`FileOps.Guard`](src/Roomy/Core/FileOps.cs).
+- **Your folders are hard-blocked.** Documents, Desktop, Pictures, Videos, Music, Downloads (as a folder), your user folder, OneDrive, Windows and Program Files can never be wiped. See [`FileOps.Guard`](src/Roomy/Core/FileOps.cs).
 - **Never follows junctions or symlinks**, so a link can't point the cleaner somewhere unexpected.
 - **In-use files are skipped**, never forced.
 - **"Your call" items start unticked** and ask for confirmation before permanent deletion.
 - **No network access at all.** No telemetry, no accounts, no updates phoning home.
+- **A redirected `%TEMP%` is ignored.** Cleanup only runs in folders that really look like a temp location (inside your local app data, inside `C:\Windows`, or a folder actually named `Temp`/`Tmp`), so a stray `TMP` variable can't point Roomy at your documents.
+- **Windows Update cache is skipped while Windows is installing updates** (`TiWorker`, `TrustedInstaller` or `wuauclt` running), so a pending update isn't forced to download again.
+
+## Language
+
+Roomy follows the Windows display language: Russian Windows gets the Russian UI, everything else gets English.
+
+```bash
+Roomy.exe --lang ru     # force Russian
+Roomy.exe --lang en     # force English
+```
+
+The choice is made once at startup, so shortcuts, the installer and the startup entry all keep whatever language the system uses. Every user-facing string lives in [`Loc.cs`](src/Roomy/Core/Loc.cs) (English + Russian side by side); the tests fail if a key is missing, empty or used with different `{0}` placeholders in the two languages.
 
 ## Install
 
-Grab **Roomy-Setup.exe** (installs per-user, no admin needed) or **Roomy-portable.exe** from [Releases](https://github.com/krezio/roomy/releases/latest). A Microsoft Store version is on the way.
+Grab **Roomy-Setup.exe** (installs per-user, no admin needed) or **Roomy-portable.exe** from [Releases](https://github.com/ryne77an/roomy/releases/latest). Each release also publishes `SHA256SUMS.txt`; verify a download before running it:
+
+```powershell
+Get-FileHash .\Roomy-Setup.exe -Algorithm SHA256
+```
+
+The installer asks for the wizard language (English or Russian) and passes that choice to the Start menu shortcut, so the app opens in the language you picked. The app on its own still follows the Windows display language.
+
+The binaries are not code-signed yet, so Windows SmartScreen will ask for confirmation the first time. Check the hash against the release notes if you want to be sure the file is the one CI built.
+
+A Microsoft Store version is on the way.
 
 Requires Windows 10 version 2004 or later, or Windows 11.
 
@@ -108,6 +139,7 @@ Handy flags:
 | Flag | What it does |
 |---|---|
 | `--demo` | Uses made-up data. Nothing on your PC is read or touched. |
+| `--lang ru` | Force the Russian UI (default: follow the Windows display language). |
 | `--background` | Starts in the tray if background mode is enabled; otherwise exits. |
 | `--shots <dir>` | Runs the demo and saves screenshots of every screen to `<dir>`. |
 | `--scan-report <file>` | Runs a real, read-only scan and writes the results to a text file. |

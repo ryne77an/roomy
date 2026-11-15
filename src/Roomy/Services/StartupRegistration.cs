@@ -1,4 +1,5 @@
 using Microsoft.Win32;
+using Roomy.Core;
 using Windows.ApplicationModel;
 
 namespace Roomy.Services;
@@ -29,7 +30,7 @@ public static class StartupRegistration
         using var approved = Registry.CurrentUser.OpenSubKey(ApprovedKey);
         var blocked = approved?.GetValue(Name) is byte[] { Length: > 0 } bytes && (bytes[0] == 3 || bytes[0] == 7);
         return new(run?.GetValue(Name) is string && !blocked, blocked,
-            blocked ? "Windows has disabled Roomy at startup. You can enable it in Windows Startup apps." : null);
+            blocked ? Loc.T("StartBlocked") : null);
     }
 
     public static async Task<StartupStatus> SetEnabledAsync(bool enabled)
@@ -46,7 +47,7 @@ public static class StartupRegistration
         {
             var status = await ReadAsync();
             if (status.Blocked) return status;
-            var exe = Environment.ProcessPath ?? throw new InvalidOperationException("Can't find Roomy's executable.");
+            var exe = Environment.ProcessPath ?? throw new InvalidOperationException(Loc.T("CantFindExe"));
             using var key = Registry.CurrentUser.CreateSubKey(RunKey);
             key.SetValue(Name, StartupCommand(exe));
         }
@@ -64,9 +65,9 @@ public static class StartupRegistration
         if (!Path.IsPathFullyQualified(exe) || exe.Contains('"') ||
             !string.Equals(Path.GetExtension(exe), ".exe", StringComparison.OrdinalIgnoreCase) ||
             string.Equals(Path.GetFileNameWithoutExtension(exe), "dotnet", StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("Run the Roomy executable to enable startup.");
+            throw new InvalidOperationException(Loc.T("StartupNeedsExe"));
         var command = $"\"{exe}\" --background";
-        if (command.Length > 260) throw new InvalidOperationException("Move Roomy to a shorter folder path before enabling startup.");
+        if (command.Length > 260) throw new InvalidOperationException(Loc.T("StartupPathTooLong"));
         return command;
     }
 
@@ -75,8 +76,8 @@ public static class StartupRegistration
         state is StartupTaskState.DisabledByUser or StartupTaskState.DisabledByPolicy or StartupTaskState.EnabledByPolicy,
         state switch
         {
-            StartupTaskState.DisabledByUser => "Windows has disabled Roomy at startup. You can enable it in Windows Startup apps.",
-            StartupTaskState.DisabledByPolicy or StartupTaskState.EnabledByPolicy => "Your organization controls this startup setting.",
+            StartupTaskState.DisabledByUser => Loc.T("StartBlocked"),
+            StartupTaskState.DisabledByPolicy or StartupTaskState.EnabledByPolicy => Loc.T("StartPolicy"),
             _ => null,
         });
 }

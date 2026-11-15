@@ -51,8 +51,8 @@ public sealed class BackgroundMonitor : IDisposable
                 var drive = new DriveInfo(Env.SystemRoot);
                 if (drive.IsReady && ReminderPolicy.IsLowSpace(p, drive.AvailableFreeSpace))
                 {
-                    Notify($"Your {drive.Name.TrimEnd('\\')} drive is getting full",
-                        $"{Format.Bytes(drive.AvailableFreeSpace)} remaining. Open Roomy to see what you can clear.", "low-space");
+                    Notify(Loc.T("NotifyLowTitle", drive.Name.TrimEnd('\\')),
+                        Loc.T("NotifyLowBody", Format.Bytes(drive.AvailableFreeSpace)), "low-space");
                 }
             }
 
@@ -72,8 +72,8 @@ public sealed class BackgroundMonitor : IDisposable
                 if (!current.RunInBackground || !current.WeeklyChecks) return;
                 _save(current with { LastWeeklyCheck = DateTimeOffset.UtcNow });
                 if (bytes >= 1L << 30 && ReminderPolicy.CanNotify(_settings(), DateTimeOffset.UtcNow))
-                    Notify($"Roomy found {Format.Bytes(bytes)} of cleanup candidates",
-                        "Temporary files and app caches have built up. Review them when you're ready.", "weekly");
+                    Notify(Loc.T("NotifyWeeklyTitle", Format.Bytes(bytes)),
+                        Loc.T("NotifyWeeklyBody"), "weekly");
             }
             finally
             {

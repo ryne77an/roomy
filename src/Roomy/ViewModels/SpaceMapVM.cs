@@ -52,7 +52,7 @@ public sealed class SpaceMapVM : ObservableObject
     }
 
     public bool ShowEmpty => !IsScanning && !HasData;
-    public string ScanButtonText => HasData ? "Rescan" : "Scan";
+    public string ScanButtonText => HasData ? Loc.T("SpaceRescan") : Loc.T("SpaceScan");
 
     string _progress = "";
     public string ProgressText { get => _progress; private set => Set(ref _progress, value); }
@@ -85,7 +85,7 @@ public sealed class SpaceMapVM : ObservableObject
         Select(drive);
         IsScanning = true;
         HasData = false;
-        ProgressText = "Starting…";
+        ProgressText = Loc.T("SpaceStarting");
         try
         {
             IReadOnlyList<BigFile> big;
@@ -94,7 +94,8 @@ public sealed class SpaceMapVM : ObservableObject
             {
                 for (int i = 1; i <= 12; i++)
                 {
-                    ProgressText = $"{i * 41_337:N0} files · {Format.Bytes((long)(i * 18.9 * (1L << 30)))}";
+                    ProgressText = Loc.T("SpaceProgress", (i * 41_337).ToString("N0"),
+                        Format.Bytes((long)(i * 18.9 * (1L << 30))));
                     await Task.Delay(110);
                 }
                 root = DemoData.SpaceTree();
@@ -104,7 +105,8 @@ public sealed class SpaceMapVM : ObservableObject
             {
                 var scanner = new SpaceScanner();
                 var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(150) };
-                timer.Tick += (_, _) => ProgressText = $"{scanner.Files:N0} files · {Format.Bytes(scanner.Bytes)}";
+                timer.Tick += (_, _) => ProgressText = Loc.T("SpaceProgress",
+                    scanner.Files.ToString("N0"), Format.Bytes(scanner.Bytes));
                 timer.Start();
                 try { root = await Task.Run(() => scanner.Scan(drive.Root)); }
                 finally { timer.Stop(); }
@@ -121,7 +123,7 @@ public sealed class SpaceMapVM : ObservableObject
         }
         catch (Exception ex)
         {
-            _main.ShowToast("Couldn't map that drive: " + ex.Message);
+            _main.ShowToast(Loc.T("SpaceMapFailed", ex.Message));
         }
         finally
         {
@@ -143,11 +145,11 @@ public sealed class SpaceMapVM : ObservableObject
         }
         if (node.FileBytes > 0)
         {
-            var label = atRoot ? "System files (pagefile, hibernation & co.)" : $"Files in this folder ({node.FileCount:N0})";
+            var label = atRoot ? Loc.T("SpaceSystemFiles") : Loc.T("SpaceFilesInFolder", node.FileCount.ToString("N0"));
             rows.Add(SpaceRowVM.Files(label, node.FileBytes, denominator, node.FullPath));
         }
         if (atRoot && _unseen > 1L << 30)
-            rows.Add(SpaceRowVM.Locked("Locked system files Roomy can't look inside", _unseen, denominator));
+            rows.Add(SpaceRowVM.Locked(Loc.T("SpaceLocked"), _unseen, denominator));
 
         rows.Sort((a, b) => b.Size.CompareTo(a.Size));
         long max = rows.Count > 0 ? rows[0].Size : 1;

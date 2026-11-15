@@ -35,7 +35,7 @@ public sealed class PreferencesStore(string path)
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
         {
-            LoadError = "Couldn't read your saved settings. Background checks are off until you save them again.";
+            LoadError = Loc.T("PreferenceLoadError");
             return new();
         }
     }

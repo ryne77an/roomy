@@ -15,6 +15,8 @@ public partial class App : Application
     {
         base.OnStartup(e);
         var args = e.Args;
+        // UI language: --lang ru|en wins, otherwise the Windows display language (ru → Russian).
+        Loc.Use(Arg("--lang"));
         if (args.Contains("--uninstall"))
         {
             try
@@ -36,7 +38,7 @@ public partial class App : Application
 
         DispatcherUnhandledException += (_, ex) =>
         {
-            MessageBox.Show(ex.Exception.Message, "Roomy hit a snag", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(ex.Exception.Message, Loc.T("AppCrashTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
             ex.Handled = true;
         };
 
@@ -111,7 +113,7 @@ public partial class App : Application
                 else
                 {
                     var sent = await _instance.SendAsync(background ? "background" : args.Contains("--scan") ? "scan" : "open");
-                    if (!sent && !background) MessageBox.Show("Roomy is already opening. Try again in a moment.", "Roomy");
+                    if (!sent && !background) MessageBox.Show(Loc.T("AppAlreadyOpening"), "Roomy");
                     Shutdown();
                 }
                 return;
